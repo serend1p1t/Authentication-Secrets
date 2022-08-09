@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+// const encrypt = require("mongoose-encryption");
 const session = require('express-session');
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -27,7 +28,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true});
+mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema ({
@@ -132,8 +134,10 @@ app.post("/submit", function(req, res){
   });
 });
 
+
 app.get("/logout", function(req, res){
-  req.logout();
+  req.logout(function(err){
+  });
   res.redirect("/");
 });
 
